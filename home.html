@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix Clone Fully Working</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+html { scroll-behavior: smooth; }
+body { background-color: #141414; color: white; font-family: Arial, sans-serif; margin:0; }
+.navbar { padding: 1rem 2rem; position: sticky; top:0; z-index:1000; background-color: rgba(20,20,20,0.9); }
+.navbar-brand { font-weight:bold; font-size:1.5rem; color:red !important; }
+.nav-link { color:white !important; cursor:pointer; }
+.hero { position: relative; height: 70vh; background-size: cover; background-position: center; display:flex; flex-direction: column; justify-content:center; padding:0 2rem; transition: background-image 1s ease-in-out; }
+.hero::before { content:""; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(to top, #141414 10%, transparent 90%); }
+.hero-content { position: relative; z-index: 2; transition: opacity 0.8s ease-in-out; }
+.hero h1 { font-size:3rem; font-weight:bold; }
+.hero p { font-size:1.2rem; max-width:600px; margin-bottom:1rem; }
+.btn-watch { background-color:red; border:none; padding:0.8rem 1.5rem; font-weight:bold; }
+.section-title { margin:2rem 1rem 1rem 1rem; font-size:1.5rem; }
+.movie-row { display:flex; overflow-x: hidden; scroll-behavior: smooth; padding:0 1rem; gap:0.5rem; position:relative; }
+.movie-row::-webkit-scrollbar { display: none; }
+.movie-card { position: relative; flex:0 0 auto; width:150px; transition: transform 0.3s; }
+.movie-card img { width:100%; border-radius:5px; display:block; }
+.movie-card .overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(to top, rgba(20,20,20,0.8) 0%, rgba(20,20,20,0) 60%); opacity:0; border-radius:5px; transition: opacity 0.3s; display:flex; align-items:flex-end; justify-content:center; padding-bottom:5px; text-align:center; }
+.movie-card .overlay span { color:white; font-weight:bold; font-size:0.9rem; }
+.movie-card:hover img { transform: scale(1.1); }
+.movie-card:hover .overlay { opacity:1; }
+.scroll-btn { position:absolute; top:50%; transform:translateY(-50%); background-color: rgba(0,0,0,0.6); border:none; color:white; font-size:2rem; width:40px; height:80px; cursor:pointer; z-index:10; display:none; }
+.scroll-btn:hover { background-color: rgba(0,0,0,0.9); }
+.movie-container:hover .scroll-btn { display:block; }
+.scroll-left { left:0; border-radius:0 5px 5px 0; }
+.scroll-right { right:0; border-radius:5px 0 0 5px; }
+section { padding-top:80px; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+<a class="navbar-brand" href="#home">Netflix</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav ms-auto">
+<li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+<li class="nav-item"><a class="nav-link" href="#tvshows">TV Shows</a></li>
+<li class="nav-item"><a class="nav-link" href="#movies">Movies</a></li>
+<li class="nav-item"><a class="nav-link" href="#mylist">My List</a></li>
+</ul>
+</div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero text-white">
+<div class="hero-content" id="heroContent">
+<h1 id="heroTitle">Avengers: Endgame</h1>
+<p id="heroDesc">After the devastating events of Avengers: Infinity War, the remaining Avengers assemble once more to reverse Thanos actions.</p>
+<button class="btn btn-watch" id="watchBtn" data-bs-toggle="modal" data-bs-target="#videoModal">
+Watch Now
+</button>
+</div>
+</section>
+
+<!-- Video Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content bg-dark">
+      <div class="modal-body p-0">
+        <iframe id="videoFrame" width="100%" height="500px" src="" title="Video" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TV Shows -->
+<section id="tvshows" class="container-fluid movie-container position-relative my-4">
+<h2 class="section-title">Popular TV Shows</h2>
+<button class="scroll-btn scroll-left" onclick="scrollLeft('tvRow')">&#10094;</button>
+<button class="scroll-btn scroll-right" onclick="scrollRight('tvRow')">&#10095;</button>
+<div id="tvRow" class="movie-row">
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg"><div class="overlay"><span>Show 1</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg"><div class="overlay"><span>Show 2</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/6KErczPBROQty7QoIsaa6wJYXZi.jpg"><div class="overlay"><span>Show 3</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"><div class="overlay"><span>Show 4</span></div></div>
+</div>
+</section>
+
+<!-- Movies -->
+<section id="movies" class="container-fluid movie-container position-relative my-4">
+<h2 class="section-title">Popular Movies</h2>
+<button class="scroll-btn scroll-left" onclick="scrollLeft('popularRow')">&#10094;</button>
+<button class="scroll-btn scroll-right" onclick="scrollRight('popularRow')">&#10095;</button>
+<div id="popularRow" class="movie-row">
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/q719jXXEzOoYaps6babgKnONONX.jpg"><div class="overlay"><span>Movie 1</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg"><div class="overlay"><span>Movie 2</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/xBKGJQsAIeweesB79KC89FpBrVr.jpg"><div class="overlay"><span>Movie 3</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/6KErczPBROQty7QoIsaa6wJYXZi.jpg"><div class="overlay"><span>Movie 4</span></div></div>
+</div>
+</section>
+
+<!-- My List -->
+<section id="mylist" class="container-fluid movie-container position-relative my-4">
+<h2 class="section-title">My List</h2>
+<button class="scroll-btn scroll-left" onclick="scrollLeft('listRow')">&#10094;</button>
+<button class="scroll-btn scroll-right" onclick="scrollRight('listRow')">&#10095;</button>
+<div id="listRow" class="movie-row">
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg"><div class="overlay"><span>Item 1</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg"><div class="overlay"><span>Item 2</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/6KErczPBROQty7QoIsaa6wJYXZi.jpg"><div class="overlay"><span>Item 3</span></div></div>
+<div class="movie-card"><img src="https://image.tmdb.org/t/p/w200/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"><div class="overlay"><span>Item 4</span></div></div>
+</div>
+</section>
+
+<script>
+// Scroll buttons
+function scrollLeft(rowId) { document.getElementById(rowId).scrollBy({left:-300,behavior:'smooth'});}
+function scrollRight(rowId) { document.getElementById(rowId).scrollBy({left:300,behavior:'smooth'});}
+
+// Infinite autoplay horizontal scroll
+const movieRows = document.querySelectorAll('.movie-row');
+movieRows.forEach(row => {
+  row.innerHTML += row.innerHTML;
+  let interval;
+  row.addEventListener('mouseenter',()=>{ interval = setInterval(()=>{ row.scrollLeft+=1; if(row.scrollLeft>=row.scrollWidth/2) row.scrollLeft=0; },10); });
+  row.addEventListener('mouseleave',()=>{ clearInterval(interval); });
+});
+
+// Hero autoplay slider with fade and video modal
+const heroData = [
+  { image:'https://image.tmdb.org/t/p/original/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg', title:'Avengers: Endgame', desc:'After the devastating events of Avengers: Infinity War, the remaining Avengers assemble once more to reverse Thanos actions.', video:'https://www.youtube.com/embed/TcMBFSGVi1c' },
+  { image:'https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg', title:'Joker', desc:'In Gotham City, mentally troubled comedian Arthur Fleck becomes the criminal mastermind known as the Joker.', video:'https://www.youtube.com/embed/zAGVQLHvwOY' },
+  { image:'https://image.tmdb.org/t/p/original/q719jXXEzOoYaps6babgKnONONX.jpg', title:'Inception', desc:'A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.', video:'https://www.youtube.com/embed/YoHD9XEInc0' }
+];
+
+let heroIndex = 0;
+const heroSection = document.querySelector('.hero');
+const heroTitle = document.getElementById('heroTitle');
+const heroDesc = document.getElementById('heroDesc');
+const heroContent = document.getElementById('heroContent');
+const videoFrame = document.getElementById('videoFrame');
+const watchBtn = document.getElementById('watchBtn');
+
+// Initial hero background
+heroSection.style.backgroundImage = `url('${heroData[0].image}')`;
+
+// Update video on modal open
+watchBtn.addEventListener('click', () => { videoFrame.src = heroData[heroIndex].video + '?autoplay=1'; });
+
+// Stop video on modal close
+const videoModal = document.getElementById('videoModal');
+videoModal.addEventListener('hidden.bs.modal', () => { videoFrame.src = ''; });
+
+// Hero fade slider
+function changeHeroSlide() {
+  heroContent.style.opacity = 0;
+  setTimeout(() => {
+    heroIndex = (heroIndex + 1) % heroData.length;
+    heroSection.style.backgroundImage = `url('${heroData[heroIndex].image}')`;
+    heroTitle.textContent = heroData[heroIndex].title;
+    heroDesc.textContent = heroData[heroIndex].desc;
+    heroContent.style.opacity = 1;
+  }, 800);
+}
+setInterval(changeHeroSlide, 5000);
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
